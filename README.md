@@ -18,7 +18,7 @@ A terminal based C++ tool for managing chess tournaments held using the Swiss fo
 ## Roadmap
 - [x] CSV generation
 - [x] Calculate number of rounds
-- [ ] **Matchmaking algorithm**
+- [ ] *Matchmaking algorithm*
 - [ ] Setting winners and completing the round
 - [ ] Score tracking
 - [ ] Next round behaviours
