@@ -8,7 +8,7 @@ A terminal based C++ tool for managing chess tournaments held using the Swiss fo
 
 ## File Structure
 ```bash
-�📂 Swiss Format Manager
+📂 Swiss Format Manager
  ┣ 📂 data
  ┃  ┗ 📄 test.csv              # Stores all player data
  ┣ 📂 include                  # Contains all header files
