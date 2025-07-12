@@ -10,6 +10,6 @@ class Player {
     unsigned int id;
     float score;
     std::string name;
-    std::vector<std::string> rounds;
+    std::vector<std::string> roundDetails;
     bool gotBye = false;
 };

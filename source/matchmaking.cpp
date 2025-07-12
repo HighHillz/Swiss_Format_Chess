@@ -5,9 +5,7 @@
 
 Matchmaker::Matchmaker() {};
 
-std::vector<std::vector<Player>> Matchmaker::makeMatches(std::vector<Player>& players) {
-    std::vector<std::vector<Player>> matches;
-
+void Matchmaker::makeMatches(std::vector<Player>& players) {
     std::sort(players.begin(), players.end(), compareScore); // Sort the players by score
     std::vector<bool> paired(players.size(), false);
 
@@ -16,7 +14,7 @@ std::vector<std::vector<Player>> Matchmaker::makeMatches(std::vector<Player>& pl
         bool matched = false; // Flag to check if matchmaking is done in this iteration
 
         for (unsigned int j = i + 1; j < players.size(); ++j) { // Skip players above j in the leaderboard
-            if (!paired[j]) {
+            if (!paired[j] && !matchedBefore(players[i], players[j])) {
                 matches.push_back({players[i], players[j]});
                 paired[i] = paired[j] = true; // Players i and j have been marked paired
                 matched = true;
@@ -26,17 +24,46 @@ std::vector<std::vector<Player>> Matchmaker::makeMatches(std::vector<Player>& pl
 
         // Logic to detect a BYE
         if (!matched && !players[i].gotBye) {
-            players[i].score += 1;
             players[i].gotBye = true;
+            players[i].roundDetails.push_back("bye");
             paired[i] = true;
-            std::cout << players[i].name << " got a BYE.";
-            std::cout << " New score is " << players[i].score << std::endl;
+            currentBYE = players[i].name;
         }
     }
-
-    return matches;
 }
 
 bool Matchmaker::compareScore(const Player& a, const Player& b) {
     return a.score > b.score;
+}
+
+void Matchmaker::listMatches(const unsigned int& round) {
+    unsigned int tableNumber = 1;
+    for (std::vector<Player>& match : matches) {
+        std::cout << "[" << tableNumber << "] ";
+        std::cout << match[0].name << " (" << match[0].score << ")";
+
+        if (match[0].roundDetails.size() < round) {
+            std::cout << "     ";
+        } else {
+            if (match[0].roundDetails[round - 1][0] == '=') std::cout << " 0.5 ";
+            else if (match[0].roundDetails[round - 1][0] == '+') std::cout << " 1-0 ";
+            else if (match[0].roundDetails[round - 1][0] == '-') std::cout << " 0-1 ";
+        }
+
+        std::cout << "(" << match[1].score << ") " << match[1].name << std::endl;
+
+        tableNumber ++;
+    }
+    if (currentBYE != "") {
+        std::cout << "[BYE] " << currentBYE << " gets a BYE" << std::endl;
+    }
+}
+
+bool Matchmaker::matchedBefore(const Player& i, const Player& j) {
+    for (const std::string& detail : i.roundDetails) {
+        if (detail == "bye") continue; // Skip this iteration if a round status is a BYE
+        int id = std::stoi(detail.substr(1, detail.length() - 1));
+        if (j.id == id) return true; // Player i has already played with player j before
+    }
+    return false;
 }

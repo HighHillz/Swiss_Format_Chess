@@ -3,22 +3,38 @@
 #include <iostream>
 #include <limits>
 
+void displayMenu() {
+    std::cout << "------------------------------ Swiss Format Chess Tournament ------------------------------" << std::endl;
+
+    std::cout << "[1] Load players from a CSV file" << std::endl;
+    std::cout << "[2] Start tournament" << std::endl;
+    std::cout << "[3] View standings" << std::endl;
+    std::cout << "[4] Export standings" << std::endl;
+    std::cout << "[0] Exit" << std::endl;
+
+    std::cout << "Enter a choice: ";
+}
+
 int main() {
-    while (true) {
-        Tournament app{};
+    Tournament agent{};
+    int choice;
 
-        char ans = '\0';
-        while (ans != 'y' && ans != 'Y' && ans != 'n' && ans != 'N') {
-            std::cout << "Do you want to start again [y/n]: ";
-            std::cin >> ans;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear input buffer
+    do {
+        displayMenu();
+        std::cin >> choice;
+        std::cin.ignore(); // Flush new line
+
+        switch (choice) {
+            case 1 :
+                agent.loadPlayersData();
+                break;
+            case 2:
+                agent.startTournament();
+                break;
         }
 
-        if (ans == 'n' || ans == 'N') {
-            std::cout << "Exiting the program..." << std::endl;
-            break;
-        }
-    }
+        std::cout << std::endl; // Purely for neatness
+    } while (choice != 0);
 
     return 0;
 }
