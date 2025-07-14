@@ -11,8 +11,10 @@ class CSVReader {
     // Reading data
     /** Read the csv file passed */
     std::vector<Player> readCSV();
-    /** Calculate number of rounds based on number of players read */
-    int getRounds(int playersCount);
+
+    // Writing data
+    /** Writes the player set data onto the passed file */
+    static void exportStandings(std::string filename, std::vector<Player>& players);
 
     private:
     std::string filename;

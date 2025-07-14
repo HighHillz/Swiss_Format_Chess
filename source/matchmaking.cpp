@@ -1,4 +1,5 @@
 #include "../include/matchmaking.h"
+#include "../include/console_utils.h"
 
 #include <iostream>
 #include <algorithm>
@@ -40,17 +41,27 @@ void Matchmaker::listMatches(const unsigned int& round) {
     unsigned int tableNumber = 1;
     for (std::vector<Player>& match : matches) {
         std::cout << "[" << tableNumber << "] ";
-        std::cout << match[0].name << " (" << match[0].score << ")";
+        std::cout << match[0].name << " " ;
+
+        Console::setColour(6);
+        std::cout << match[0].score << " ";
+        Console::setColour(7);
 
         if (match[0].roundDetails.size() < round) {
             std::cout << "     ";
         } else {
+            Console::setColour(10);
             if (match[0].roundDetails[round - 1][0] == '=') std::cout << " 0.5 ";
             else if (match[0].roundDetails[round - 1][0] == '+') std::cout << " 1-0 ";
             else if (match[0].roundDetails[round - 1][0] == '-') std::cout << " 0-1 ";
+            Console::setColour(7);
         }
 
-        std::cout << "(" << match[1].score << ") " << match[1].name << std::endl;
+        Console::setColour(6);
+        std::cout << " " << match[1].score << " ";
+        Console::setColour(7);
+
+        std::cout << match[1].name << std::endl;
 
         tableNumber ++;
     }

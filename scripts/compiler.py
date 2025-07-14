@@ -16,7 +16,8 @@ cpp_files = [
     os.path.join(SRC_DIR, "players.cpp"),
     os.path.join(SRC_DIR, "tournament.cpp"),
     os.path.join(SRC_DIR, "matchmaking.cpp"),
-    os.path.join(SRC_DIR, "round.cpp")
+    os.path.join(SRC_DIR, "round.cpp"),
+    os.path.join(SRC_DIR, "console_utils.cpp")
 ]
 
 # Create build folder if missing
@@ -32,16 +33,8 @@ result = subprocess.run(compile_command, capture_output=True, text=True)
 
 if result.returncode == 0:
     print(f"Compilation successful: {OUTPUT_PATH}")
-    
-    ans = ""
-    while ans.lower() not in ['y', 'n']:
-        ans = input("Would you like to start the application [y/n]: ")
-        if ans.lower() == 'y': 
-            print("Starting the program...")
-            subprocess.run(["start", "", OUTPUT_PATH], shell=True) 
-        elif ans.lower() == 'n':
-            print("Exiting the program...")
-            exit(-1)
+    subprocess.run(["start", "", OUTPUT_PATH], shell=True) 
+
 else:
     print("Compilation failed:\n")
     print(result.stderr)

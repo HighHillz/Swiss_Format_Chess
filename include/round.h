@@ -4,7 +4,6 @@
 
 class Round {
     public:
-
     // Constructor : Define current round
     Round(unsigned int _round);
 

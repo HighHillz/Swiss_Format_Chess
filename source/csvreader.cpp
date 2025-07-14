@@ -1,4 +1,5 @@
 #include "../include/csvreader.h"
+#include "../include/console_utils.h"
 
 #include <fstream>
 #include <iostream>
@@ -20,19 +21,48 @@ std::vector<Player> CSVReader::readCSV() {
     std::ifstream file{filename};
 
     if (!file.is_open()) {
-        std::cout << "Error opening " << filename << std::endl;
         throw std::exception{}; // Throw an expeption if file cannot be opened
     }
 
     std::getline(file, line); // Skip the header row
     while (std::getline(file, line)) {
-        players.push_back(stringToPlayer(lineCount, line));
+        try {
+            players.push_back(stringToPlayer(lineCount, line));
+        } catch (const std::exception& e) {
+            Console::setColour(12);
+            std::cout << "ERROR: Bad data read at line " << lineCount << std::endl;
+            Console::setColour(7);
+            return players;
+        }
+        
         lineCount++;
     }
 
     file.close();
 
     return players;
+}
+
+// Writing data
+
+void CSVReader::exportStandings(std::string filename, std::vector<Player>& players) {
+    std::ofstream file{filename};
+
+    std::cout << std::endl;
+
+    std::cout << "Exporting data..." << std::endl;
+
+    // Write headers
+    std::string line = "Position,Name,Score,Buchholz";
+    file << line << "\n";
+
+    unsigned int pos = 1;
+    // Write data
+    for (const Player& player : players) {
+        line = std::to_string(pos) + "," + player.name + "," + std::to_string(player.score) + "," + std::to_string(player.buchholz);
+        file << line << "\n";
+        pos ++;
+    }
 }
 
 // Conversion functions
@@ -62,8 +92,9 @@ Player CSVReader::stringToPlayer(unsigned int lineCount, std::string line) {
     std::vector<std::string> tokens = tokenise(line, ',');
 
     float score = std::stof(tokens[1]); // Convert score string to a float
+    float buchholz = std::stof(tokens[2]); // Convert Buchholz score string to a float
 
-    Player player{lineCount, tokens[0], score};
+    Player player{lineCount, tokens[0], score, buchholz};
 
     return player;
 }

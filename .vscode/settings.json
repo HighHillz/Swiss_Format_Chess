@@ -50,7 +50,9 @@
         "iostream": "cpp",
         "istream": "cpp",
         "fstream": "cpp",
-        "cstdarg": "cpp"
+        "cstdarg": "cpp",
+        "iomanip": "cpp",
+        "sstream": "cpp"
     },
     "python.analysis.typeCheckingMode": "off"
 }

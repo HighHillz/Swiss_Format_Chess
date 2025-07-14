@@ -1,5 +1,6 @@
 #include "../include/round.h"
 #include "../include/matchmaking.h"
+#include "../include/console_utils.h"
 
 #include <iostream>
 
@@ -7,7 +8,9 @@ Round::Round(unsigned int _round) : round(_round)
 {}
 
 void Round::startRound(std::vector<Player>& players) {
+    Console::setColour(3);
     std::cout << "========= Round " << round << " =========" << std::endl;
+    Console::setColour(7);
     std::cout << std::endl;
 
     // Matchmaking
@@ -47,8 +50,16 @@ void Round::startRound(std::vector<Player>& players) {
             case 3:
                 updateMatchState(matchmaker.matches[choice - 1][0], matchmaker.matches[choice - 1][1], true);
                 break;
+            default:
+                Console::setColour(12);
+                std::cout << "ERROR: Invalid input " << result << std::endl;
+                Console::setColour(7);
         }
     } while (!roundOver(matchmaker.matches));
+
+    std::cout << std::endl;
+    std::cout << "Final results for round " << round << std::endl;
+    matchmaker.listMatches(round); // Display final results for the round
 
     for (const std::vector<Player>& match : matchmaker.matches) {
         for (const Player& player : match) {
@@ -65,6 +76,9 @@ void Round::startRound(std::vector<Player>& players) {
         else if (player.roundDetails[round - 1][0] == '+') player.score += 1;
         else if (player.roundDetails[round - 1] == "bye") player.score += 1;
     }
+    
+    std::cout << std::endl;
+    std::cout << "Round " << round << " is over!";
 }
 
 void Round::updateMatchState(Player& winner, Player& loser, bool draw) {
