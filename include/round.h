@@ -1,6 +1,7 @@
 #pragma once
 
 #include "players.h"
+#include "matchmaking.h"
 
 class Round {
     public:
@@ -12,11 +13,13 @@ class Round {
     
     private:
     /** A small menu regarding result setting for the passed match details */
-    void displayResultsMenu(const std::vector<Player>& match);
+    void displayResultsMenu(const int& index);
     /** Sets winners, losers and draws */
-    void updateMatchState(Player& winner, Player& loser, bool draw = false);
+    void updateMatchState(Player& winner, Player& loser, const int& index, bool draw = false);
     /** Returns true if all players have their games finished */
     bool roundOver(const std::vector<std::vector<Player>>& matches);
 
     unsigned int round;
+    Matchmaker matchmaker{};
+    std::vector<bool> match_status;
 };

@@ -19,4 +19,8 @@ class Matchmaker {
     static bool compareScore(const Player& a, const Player& b);
     /** Checks and returns if the passed player has already been matched with the other player */
     bool matchedBefore(const Player& i, const Player& j);
+    /** Checks and assigns a colour for the players in the match */
+    void assignColours(std::vector<Player>& match);
+    /** Returns the number times a colour has been played by a player */
+    int getColourCount(const Player& player, Colour colour);
 };

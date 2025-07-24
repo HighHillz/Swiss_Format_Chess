@@ -53,13 +53,13 @@ void CSVReader::exportStandings(std::string filename, std::vector<Player>& playe
     std::cout << "Exporting data..." << std::endl;
 
     // Write headers
-    std::string line = "Position,Name,Score,Buchholz";
+    std::string line = "Position,Name,Score,Buchholz,SB";
     file << line << "\n";
 
     unsigned int pos = 1;
     // Write data
     for (const Player& player : players) {
-        line = std::to_string(pos) + "," + player.name + "," + std::to_string(player.score) + "," + std::to_string(player.buchholz);
+        line = std::to_string(pos) + "," + player.name + "," + std::to_string(player.score) + "," + std::to_string(player.buchholz) + "," + std::to_string(player.sb);
         file << line << "\n";
         pos ++;
     }
@@ -93,8 +93,9 @@ Player CSVReader::stringToPlayer(unsigned int lineCount, std::string line) {
 
     float score = std::stof(tokens[1]); // Convert score string to a float
     float buchholz = std::stof(tokens[2]); // Convert Buchholz score string to a float
+    float sb = std::stof(tokens[3]); // Convert Sonneborn-Berger score string to a float
 
-    Player player{lineCount, tokens[0], score, buchholz};
+    Player player{lineCount, tokens[0], score, buchholz, sb};
 
     return player;
 }

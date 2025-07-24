@@ -23,6 +23,8 @@ class Tournament {
     static bool compareScore(const Player& a, const Player& b);
     /** Calculates and sets the Buchholz score of the passed player */
     void setBuchholz(Player& player);
+    /** Calculates and sets the Sonneborn-Berger score of the passed player */
+    void setSonnebornBerger(Player& player);
     
     /** Lists all players sorted by score in descending order */
     void displayStandings();

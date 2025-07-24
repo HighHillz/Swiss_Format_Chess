@@ -4,8 +4,8 @@ A terminal based C++ tool for managing chess tournaments held using the Swiss fo
 
 ## Stats
 
-![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)
-![Status](https://img.shields.io/badge/Status-Updating-yellow.svg)
+![Version](https://img.shields.io/badge/Version-1.1.1-blue.svg)
+![Status](https://img.shields.io/badge/Status-Completed-green.svg)
 
 ## File Structure
 ```bash
@@ -49,9 +49,9 @@ My goal? To create a lightweight, beginner-friendly Swiss Tournament Manager tha
 Whether you're a chess enthusiast or just organizing a fun event, I hope this tool makes your tournament experience smoother and smarter. ♟️💻
 
 ## Roadmap
-- [ ] Matchmaking by colour properties
-- [ ] Display players based on colours assigned
-- [ ] Sonneborn-Berger tie breaker check
+- [x] Assigning colours to players
+- [x] Display players based on colours assigned
+- [x] Sonneborn-Berger tie breaker check
 
 ## Contribution
 Feel free to make an edit or change to this project to improve its stability. You may do so by first pulling a request or an issue to talk about it. All are welcome!

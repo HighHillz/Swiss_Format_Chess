@@ -65,6 +65,7 @@ void Tournament::startTournament() {
     // Calculate and update the Buchholz score for every player
     for (Player& player : players) {
         setBuchholz(player);
+        setSonnebornBerger(player);
     }
 
     std::cout << "Tournament is over! ";
@@ -105,14 +106,15 @@ void Tournament::displayStandings() {
     std::sort(players.begin(), players.end(), compareScore); // Sort players by score first
 
     // Header
-    std::cout << "=============================================================\n";
+    std::cout << "=================================================================================\n";
     std::cout << std::left << std::setw(8) << "Rank" << std::setw(30) << "Name";
     Console::setColour(6);
     std::cout << std::setw(8) << "Score";
     Console::setColour(14);
-    std::cout << std::setw(10) << "Buchholz" << "\n";
+    std::cout << std::setw(10) << "Buchholz";
+    std::cout << std::setw(20) << "Sonneborn-Berger" << "\n";
     Console::setColour(7);
-    std::cout << "-------------------------------------------------------------\n";
+    std::cout << "---------------------------------------------------------------------------------\n";
     
     unsigned int pos = 1;
     for (const Player& player : players) {
@@ -122,13 +124,14 @@ void Tournament::displayStandings() {
         Console::setColour(6);
         std::cout << std::setw(8) << player.score;
         Console::setColour(14);
-        std::cout << std::setw(10) << player.buchholz << "\n";
+        std::cout << std::setw(10) << player.buchholz;
+        std::cout << std::setw(20) << player.sb << "\n";
         Console::setColour(7);
 
         pos ++;
     }
 
-    std::cout << "=============================================================\n";
+    std::cout << "=================================================================================\n";
 }
 
 void Tournament::exportStandings() {
@@ -148,10 +151,12 @@ void Tournament::exportStandings() {
 }
 
 bool Tournament::compareScore(const Player& a, const Player& b) {
-    if (a.score == b.score) {
-        return a.buchholz > b.buchholz; // Compare Buchholz score if main scores are equal
+    if (a.score == b.score) { // If main scores are equal, compare Buchholz score
+        if (a.buchholz == b.buchholz) { // If Buchholz scores are also equal, compare Sonneborn-Berger score
+            return a.sb > b.sb;
+        }
+        return a.buchholz > b.buchholz;
     }
-
     return a.score > b.score;
 }
 
@@ -174,6 +179,35 @@ void Tournament::setBuchholz(Player& player) {
     }
 
     player.buchholz = buchholz;
+}
+
+void Tournament::setSonnebornBerger(Player& player) {
+    float sb = player.sb;
+
+    for (const std::string& detail : player.roundDetails) {
+        if (detail == "bye") continue; // Skip this iteration if a round status is a BYE
+        char matchStatus = detail[0];
+
+        if (matchStatus == '+') {
+            int id = std::stoi(detail.substr(1, detail.length() - 1));
+            for (const Player& p : players) {
+                if (p.id == id) {
+                    sb += p.score; 
+                    break;
+                }
+            }
+        } else if (matchStatus == '=') {
+            int id = std::stoi(detail.substr(1, detail.length() - 1));
+            for (const Player& p : players) {
+                if (p.id == id) {
+                    sb += (p.score / 2); 
+                    break;
+                }
+            }
+        }
+    }
+
+    player.sb = sb;
 }
 
 double Tournament::logBBaseA(float A, float B) {
